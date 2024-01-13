@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: C:\Users\DAHLIA LUMBANTORUAN\AppData\Local\Microsoft\WinGet\Packages\Kubernetes.kompose_Microsoft.Winget.Source_8wekyb3d8bbwe\kompose.exe convert -f ..\next-todo-list\docker-compose.yaml
+    kompose.version: 1.31.2 (a92241f79)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: app-srv
+  name: app-srv
+spec:
+  type: "NodePort"
+  ports:
+    - port: 3030
+      targetPort: 3030
+      protocol: TCP
+      nodePort: 31386
+  selector:
+    io.kompose.service: app-srv
+  sessionAffinity: None
+  type: NodePort
+status:
+  loadBalancer: {}

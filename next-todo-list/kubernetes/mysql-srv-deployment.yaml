@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: C:\Users\DAHLIA LUMBANTORUAN\AppData\Local\Microsoft\WinGet\Packages\Kubernetes.kompose_Microsoft.Winget.Source_8wekyb3d8bbwe\kompose.exe convert -f ..\next-todo-list\docker-compose.yaml
+    kompose.version: 1.31.2 (a92241f79)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: mysql-srv
+  name: mysql-srv
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: mysql-srv
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: C:\Users\DAHLIA LUMBANTORUAN\AppData\Local\Microsoft\WinGet\Packages\Kubernetes.kompose_Microsoft.Winget.Source_8wekyb3d8bbwe\kompose.exe convert -f ..\next-todo-list\docker-compose.yaml
+        kompose.version: 1.31.2 (a92241f79)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/next-todo-list-default: 'true'
+        io.kompose.service: mysql-srv
+    spec:
+      containers:
+        - env:
+            - name: MYSQL_DATABASE
+              value: db_todo
+            - name: MYSQL_ROOT_PASSWORD
+              value: root
+          image: mysql
+          name: mysql-ctr
+          ports:
+            - containerPort: 3306
+              hostPort: 3307
+              protocol: TCP
+          resources: {}
+          stdin: true
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: mysql-srv-claim0
+            - mountPath: /etc/mysql/conf.d
+              name: mysql-srv-claim1
+            - mountPath: /logs
+              name: mysql-srv-claim2
+      restartPolicy: Always
+      volumes:
+        - name: mysql-srv-claim0
+          persistentVolumeClaim:
+            claimName: mysql-srv-claim0
+        - name: mysql-srv-claim1
+          persistentVolumeClaim:
+            claimName: mysql-srv-claim1
+        - name: mysql-srv-claim2
+          persistentVolumeClaim:
+            claimName: mysql-srv-claim2
+status: {}
